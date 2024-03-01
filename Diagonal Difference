@@ -1,0 +1,72 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+class Result {
+
+    /*
+     * Complete the 'diagonalDifference' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts 2D_INTEGER_ARRAY arr as parameter.
+     */
+
+    public static int diagonalDifference(List<List<Integer>> arr) {
+        int n = arr.size();
+        int d1 = 0, d2 = 0;
+        
+        for (int i = 0; i < n; i++) {
+            d1 += arr.get(i).get(i);
+            d2 += arr.get(i).get(n - i - 1);
+        }
+        
+        return Math.abs(d1 - d2);
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<List<Integer>> arr = new ArrayList<>();
+
+        IntStream.range(0, n).forEach(i -> {
+            try {
+                arr.add(
+                    Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                        .map(Integer::parseInt)
+                        .collect(toList())
+                );
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        int result = Result.diagonalDifference(arr);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
+
+
+/* 
+ * The time complexity of the function is O(n), where n is the number of rows (or columns) in the square matrix. This is because we are traversing each element of the matrix’s diagonals once.
+ * The space complexity of the function is O(1). This is because we are not using any additional data structures whose size scales with the input. 
+ * The variables d1 and d2 used to calculate the sums of the diagonals do not scale with the size of the input matrix, so they take constant space.
+ * if the space for the input is considered, then the space complexity would be O(n^2), where n is the number of rows (or columns) in the square matrix.
